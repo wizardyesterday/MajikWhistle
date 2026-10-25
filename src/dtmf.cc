@@ -22,8 +22,9 @@
 //
 //    amplitude1 - The ampoitude between 0 and 1 inclusive, of NC0 1.
 //    amplitude2 - The ampoitude between 0 and 1 inclusive, of NC0 2.
+//                 The default value is zero.
 //    frequency1 - frequency in Hz of NCO 1.
-//    frequency2 - frequency in Hz of NCO 2.
+//    frequency2 - frequency in Hz of NCO 2. The default value is zero.
 //    sampleRate - The sample rate in samples/second.
 //    duration - The duration in milliseconds.
 //*************************************************************************
