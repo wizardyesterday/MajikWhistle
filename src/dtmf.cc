@@ -145,9 +145,11 @@ bool getUserArguments(int argc,char **argv,struct MyParameters parameters)
 
       case 'h':
       {
+
         // Display usage.
-        fprintf(stderr,"./cosine -a amplitude -f frequency -r sampleRate"
-                " -d duration\n");
+        fprintf(stderr,"./dtmf -a amplitude1 -A amplitude2"
+                " -f frequency1 -F frequency2 -r sampleRate"
+                "\n       -d duration, ms\n");
 
         // Indicate that program must be exited.
         exitProgram = true;
