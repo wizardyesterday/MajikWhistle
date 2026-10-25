@@ -95,8 +95,8 @@ bool getUserArguments(int argc,char **argv,struct MyParameters parameters)
   // Default to 8000 S/s.
   *parameters.sampleRatePtr = 8000;
 
-  // Default for a 1 second signal.
-  *parameters.durationPtr = 1;
+  // Default for a 1000 millisecond signal.
+  *parameters.durationPtr = 1000;
   //_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
 
   // Set up for loop entry.
