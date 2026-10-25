@@ -3,23 +3,30 @@
 //*************************************************************************
 
 //*************************************************************************
-// This program tests both the numerically controlled oscillator (NCO).
+// This program generates DTMF tones that are suitable for dialers on
+// the old PSTN. Two numerically oscillators are used for tone generation,
+// and if only one oscillator needs to be used, the frequency and
+// amplitude of that oscillator will be used. The program was written in
+// order to wring out any bugs before it is integrated into the
+// MajikWhistle touch tone generator program.
 // The NCO data is written to an output file with the format described
 // below.  Note that only the in-phase component of the NCO output is
 // used, therefore the output file represents a cosine waveform.
 //
 // To run this program type,
 // 
-//     ./cosine > -a amplitude -f frequency1 -F frequency2 -r sampleRate
-//                -d duration > ncoFileName,
+//     ./dtmf -a amplitude1 -A amplitude2 -f frequency1 -F frequency2
+//            -r sampleRate -d duration (ms) > ncoFileName,
 //
 // where,
 //
-//    amplitude - The ampoitude between 0 and 1 inclusive.
-//    frequency - frequency in Hz.
+//    amplitude1 - The ampoitude between 0 and 1 inclusive, of NC0 1.
+//    amplitude2 - The ampoitude between 0 and 1 inclusive, of NC0 2.
+//    frequency1 - frequency in Hz of NCO 1.
+//    frequency2 - frequency in Hz of NCO 2.
 //    sampleRate - The sample rate in samples/second.
-//    duration - The duration in seconds.
-///*************************************************************************
+//    duration - The duration in milliseconds.
+//*************************************************************************
 
 #include <stdio.h>
 #include <stdint.h>
@@ -76,17 +83,17 @@ bool getUserArguments(int argc,char **argv,struct MyParameters parameters)
   // Default 1/4 scale.
   *parameters.amplitude1Ptr = 0.25;
 
-  // Default 1/4 scale.
-  *parameters.amplitude1Ptr = 0.25;
+  // Default to zero amplitude.
+  *parameters.amplitude2Ptr = 0;
 
   // Default to 200Hz.
   *parameters.frequency1Ptr = 200;
 
   // Default to 0Hz.
-  *parameters.frequency1Ptr = 0;
+  *parameters.frequency2Ptr = 0;
 
-  // Default to 24000 S/s.
-  *parameters.sampleRatePtr = 24000;
+  // Default to 8000 S/s.
+  *parameters.sampleRatePtr = 8000;
 
   // Default for a 1 second signal.
   *parameters.durationPtr = 1;
@@ -209,8 +216,8 @@ int main(int argc,char **argv)
     return (0);
   } // if
 
-  // We derive this.
-  numberOfSamples = (int)(sampleRate * duration);
+  // We derive this converting milliseconds to seconds.
+  numberOfSamples = (int)((sampleRate * duration / 1000));
 
   // Instantiate an NCO 1.
   myNco1Ptr = new Nco(sampleRate,frequency1);
