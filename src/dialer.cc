@@ -4,14 +4,12 @@
 
 //*************************************************************************
 // This program generates blue box DTMF tones that are suitable for use on
-// the old PSTN. Two numerically oscillators are used for tone generation,
-// and if only one oscillator needs to be used, the frequency and
-// amplitude of that oscillator will be used. The program was written in
-// order to wring out any bugs before it is integrated into the
-// MajikWhistle touch tone generator program.
-// The NCO data is written to an output file with the format described
-// below.  Note that only the in-phase component of the NCO output is
-// used, therefore the output file represents a cosine waveform.
+// the old PSTN. Two numerically controlled oscillators are used for tone
+// generation,
+// The program was written in to wring out any bugs before it is
+// integrated into the MajikWhistle touch tone generator program.
+// The NCO data is written to an output file in the format of 16-bit little
+// endian PCM audio samples.
 //
 // To run this program type,
 // 
