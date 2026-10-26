@@ -3,7 +3,7 @@
 //*************************************************************************
 
 //*************************************************************************
-// This program generates DTMF tones that are suitable for dialers on
+// This program generates blue box DTMF tones that are suitable for use on
 // the old PSTN. Two numerically oscillators are used for tone generation,
 // and if only one oscillator needs to be used, the frequency and
 // amplitude of that oscillator will be used. The program was written in
@@ -15,7 +15,7 @@
 //
 // To run this program type,
 // 
-//     ./dtmf -r sampleRate -d duration (ms) > ncoFileName,
+//     ./dialer -r sampleRate -d duration (ms) > ncoFileName,
 //
 // where,
 //
