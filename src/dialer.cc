@@ -1,5 +1,5 @@
 //*************************************************************************
-// File name: cosine.cc
+// File name: dialer.cc
 //*************************************************************************
 
 //*************************************************************************
@@ -8,12 +8,12 @@
 // generation,
 // The program was written in to wring out any bugs before it is
 // integrated into the MajikWhistle touch tone generator program.
-// The NCO data is written to an output file in the format of 16-bit little
-// endian PCM audio samples.
+// The NCO data is written to /dev/dsp in signed 16-bit little endian
+// PCM audio samples.
 //
 // To run this program type,
 // 
-//     ./dialer -r sampleRate -d duration (ms) > ncoFileName,
+//     ./dialer -r sampleRate -d duration (ms)
 //
 // where,
 //
@@ -29,7 +29,15 @@
 #include <sys/types.h>
 #include <termios.h>
 
+#include <fcntl.h>
+#include <sys/fcntl.h>
+#include <sys/ioctl.h>
+#include <linux/soundcard.h>
+
 #include "Nco.h"
+
+#define SIZE (16)
+#define CHANNELS (1)
 
 // This structure is used to consolidate user parameters.
 struct MyParameters
@@ -38,7 +46,14 @@ struct MyParameters
   float *durationPtr;
 };
 
+int fd;
 char textBuffer[200];
+
+// This buffer holds the digitized audio.
+int16_t buf[256000];
+
+void init(int sampleRate);
+void writePcmSamples(int16_t *buffer,int numberOfSamples);
 
 void setEcho(int enable)
 {
@@ -199,6 +214,8 @@ int main(int argc,char **argv)
   // Instantiate an NCO 2.
   myNco2Ptr = new Nco(sampleRate,440);
 
+  init((int)sampleRate);
+
   while (!exitProgram)
   {
     // Grab menu selection.
@@ -341,12 +358,13 @@ int main(int argc,char **argv)
       // Sum the two oscillator values.
       cosineValue = cosineValue1 + cosineValue2;
 
-      // Write the samples to stdout
-      fwrite(&cosineValue,sizeof(int16_t),1,stdout);
+      // Buffer it up!
+      buf[i] = cosineValue;
 
     } // for
 
-    fflush(stdout);
+    // Write the samples to the sound caed.
+    writePcmSamples(buf,numberOfSamples);
 
   } // while
 
@@ -365,3 +383,82 @@ int main(int argc,char **argv)
   return (0);
 
 } // main
+
+void init(int sampleRate)
+{
+  int arg;
+  int status;
+
+  // Open sound device.
+  fd = open("/dev/dsp",O_WRONLY);
+  if (fd < 0)
+  {
+    perror("Open failed.");
+  } // if
+
+  // Set samping parameters.
+  arg = SIZE;
+  status = ioctl(fd,SOUND_PCM_WRITE_BITS,&arg);
+  if (status == -1)
+  {
+    perror("ioctl(SOUND_PCM_WRITE_BITS) failed.");
+  } // if
+  if (arg != SIZE)
+  {
+    perror("Unable to set sample size.");
+  } // if
+
+  // Set number of channels.
+  arg = CHANNELS;
+  status = ioctl(fd,SOUND_PCM_WRITE_CHANNELS,&arg);
+  if (status == -1)
+  {
+    perror("ioctl(SOUND_PCM_WRITE_CHANNELS) failed.");
+  } // if
+  if (arg != CHANNELS)
+  {
+    perror("Unable to set number of channels.");
+  } // if
+
+  // Set sample rate.
+  arg = sampleRate;
+  status = ioctl(fd,SOUND_PCM_WRITE_RATE,&arg);
+  if (status == -1)
+  {
+    perror("ioctl(SOUND_PCM_WRITE_RATE) failed.");
+  } // if
+  if (arg != sampleRate)
+  {
+    perror("Unable to set sample rate.");
+  } // if
+
+  // Set data format.
+  arg = AFMT_S16_LE;
+  status = ioctl(fd,SOUND_PCM_SETFMT,&arg);
+  if (status == -1)
+  {
+    perror("ioctl(SOUND_PCM_SETFMT) failed.");
+  } // if
+
+  return;
+
+} // init
+
+
+void writePcmSamples(int16_t *buffer,int numberOfSamples)
+{
+  int status;
+
+  status = write(fd,buffer,numberOfSamples*2);
+
+  // Wait for playback to complete.
+  status = ioctl(fd,SOUND_PCM_SYNC);
+  if (status == -1)
+  {
+    perror("ioctl(SOUND_PCM_SYNC) failed.");
+  } // if
+
+  return;
+
+} // writePcmSamples
+
