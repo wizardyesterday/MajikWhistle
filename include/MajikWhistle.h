@@ -11,18 +11,17 @@
 #define __MAJIKWHISTLE__
 
 #include <stdint.h>
-#include "Nco.h"
 
-class Nco
+class MajikWhistle
 {
   //***************************** operations **************************
 
   public:
 
-  MajikWhistle(float sampleRate,char *configurationFileNamePtr);
+  MajikWhistle(int sampleRate,char *configurationFileNamePtr);
   ~MajikWhistle(void);
 
-  void dial(std::string phoneNumber);
+  void dial(char *phoneNumber);
   void hangup(void);
 
   //***************************** attributes **************************
@@ -34,6 +33,9 @@ class Nco
   // These are the two oscillators whose outputs will be summed.
   Nco *nco1Ptr;
   Nco *nco2Ptr;
+
+  // This sends PCM samples to the sound card.
+  PcmWriter *pcmWriterPtr;
 };
 
 #endif // __MAJIKWHISTLE__

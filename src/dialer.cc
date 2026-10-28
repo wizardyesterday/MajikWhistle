@@ -32,9 +32,6 @@
 #include "Nco.h"
 #include "PcmWriter.h"
 
-#define SIZE (16)
-#define CHANNELS (1)
-
 // This structure is used to consolidate user parameters.
 struct MyParameters
 {
