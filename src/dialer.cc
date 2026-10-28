@@ -29,12 +29,8 @@
 #include <sys/types.h>
 #include <termios.h>
 
-#include <fcntl.h>
-#include <sys/fcntl.h>
-#include <sys/ioctl.h>
-#include <linux/soundcard.h>
-
 #include "Nco.h"
+#include "PcmWriter.h"
 
 #define SIZE (16)
 #define CHANNELS (1)
@@ -173,6 +169,7 @@ int main(int argc,char **argv)
 {
   int i;
   int ch;
+  bool success;
   bool exitProgram;
   float iValue, qValue;
   int16_t cosineValue;
@@ -187,6 +184,7 @@ int main(int argc,char **argv)
   int numberOfSamples;
   Nco *myNco1Ptr;
   Nco *myNco2Ptr;
+  PcmWriter *myPcmWriterPtr;
   struct MyParameters parameters;
 
   // Set up for parameter transmission.
@@ -214,7 +212,8 @@ int main(int argc,char **argv)
   // Instantiate an NCO 2.
   myNco2Ptr = new Nco(sampleRate,440);
 
-  init((int)sampleRate);
+  // Instatiate a PcmWriter.
+  myPcmWriterPtr = new PcmWriter((int)sampleRate,&success);
 
   while (!exitProgram)
   {
@@ -364,7 +363,7 @@ int main(int argc,char **argv)
     } // for
 
     // Write the samples to the sound caed.
-    writePcmSamples(buf,numberOfSamples);
+    myPcmWriterPtr->writePcmSamples(buf,numberOfSamples);
 
   } // while
 
@@ -380,85 +379,13 @@ int main(int argc,char **argv)
     delete myNco2Ptr;
   } // if
 
+  // Release resource.
+  if (myPcmWriterPtr != NULL)
+  {
+    delete myPcmWriterPtr;
+  } // if
+
   return (0);
 
 } // main
-
-void init(int sampleRate)
-{
-  int arg;
-  int status;
-
-  // Open sound device.
-  fd = open("/dev/dsp",O_WRONLY);
-  if (fd < 0)
-  {
-    perror("Open failed.");
-  } // if
-
-  // Set samping parameters.
-  arg = SIZE;
-  status = ioctl(fd,SOUND_PCM_WRITE_BITS,&arg);
-  if (status == -1)
-  {
-    perror("ioctl(SOUND_PCM_WRITE_BITS) failed.");
-  } // if
-  if (arg != SIZE)
-  {
-    perror("Unable to set sample size.");
-  } // if
-
-  // Set number of channels.
-  arg = CHANNELS;
-  status = ioctl(fd,SOUND_PCM_WRITE_CHANNELS,&arg);
-  if (status == -1)
-  {
-    perror("ioctl(SOUND_PCM_WRITE_CHANNELS) failed.");
-  } // if
-  if (arg != CHANNELS)
-  {
-    perror("Unable to set number of channels.");
-  } // if
-
-  // Set sample rate.
-  arg = sampleRate;
-  status = ioctl(fd,SOUND_PCM_WRITE_RATE,&arg);
-  if (status == -1)
-  {
-    perror("ioctl(SOUND_PCM_WRITE_RATE) failed.");
-  } // if
-  if (arg != sampleRate)
-  {
-    perror("Unable to set sample rate.");
-  } // if
-
-  // Set data format.
-  arg = AFMT_S16_LE;
-  status = ioctl(fd,SOUND_PCM_SETFMT,&arg);
-  if (status == -1)
-  {
-    perror("ioctl(SOUND_PCM_SETFMT) failed.");
-  } // if
-
-  return;
-
-} // init
-
-
-void writePcmSamples(int16_t *buffer,int numberOfSamples)
-{
-  int status;
-
-  status = write(fd,buffer,numberOfSamples*2);
-
-  // Wait for playback to complete.
-  status = ioctl(fd,SOUND_PCM_SYNC);
-  if (status == -1)
-  {
-    perror("ioctl(SOUND_PCM_SYNC) failed.");
-  } // if
-
-  return;
-
-} // writePcmSamples
 
