@@ -44,20 +44,37 @@ struct toneInfoMapping_t
   Purpose: The purpose of this function is to serve as the constructor for
   an instance of a MajikWhstle.
 
-  Calling Sequence: MajikWhstle(sampleRate)
+  Calling Sequence: MajikWhstle(sampleRate,toneDurationInMilliseconds,
+                                toneSpacingInMilliseconds,
+                                fileNamePtr)
 
   Inputs:
 
     sampleRate - The sample rate in S/s.
+
+    toneDurationInMilliseconds - The duration of each tone.
+
+    toneSpacingInMilliseconds - The time spacing between each tone.
+
+    fileNamePtr - A pointer to a C string array that specifies the
+    configuration file name.
 
   Outputs:
 
     None.
 
 *****************************************************************************/
-MajikWhistle::MajikWhistle(int sampleRate,char *conifigurationFilePtr)
+MajikWhistle::MajikWhistle(
+  int sampleRate,
+  int toneDurationInMilliseconds,
+  int toneSpacingInMilliseconds,
+  char *configurationFileNamePtr)
 {
   bool success;
+
+  // Compute th number of samples for each tone.
+
+  // Compute the number of samples for the zero interdigit sequence.
 
   // Instantiate the NCO's.
   nco1Ptr = new Nco((float)sampleRate,2600);

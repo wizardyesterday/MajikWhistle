@@ -27,7 +27,11 @@ class MajikWhistle
 
   public:
 
-  MajikWhistle(int sampleRate,char *configurationFileNamePtr);
+  MajikWhistle(int sampleRate,
+               int toneDurationInMilliseconds,
+               int toneSpacingInMilliseconds,
+               char *configurationFileNamePtr);
+
   ~MajikWhistle(void);
 
   void dial(char *phoneNumber);
@@ -37,7 +41,11 @@ class MajikWhistle
   private:
 
   // The sample rate is needed when performing frequency changes.
-  float sampleRate;
+  int sampleRate;
+
+  // Th
+  int numberOfSamplesForTone;
+  int numberOfSamplesForToneSpacing;
 
   // These are the two oscillators whose outputs will be summed.
   Nco *nco1Ptr;
