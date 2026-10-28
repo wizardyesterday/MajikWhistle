@@ -11,6 +11,15 @@
 #define __MAJIKWHISTLE__
 
 #include <stdint.h>
+#include <map>
+
+struct toneInfo_t
+{
+  float frequency1;
+  float amplitude1;
+  float frequency2;
+  float amplitude2;
+};
 
 class MajikWhistle
 {
@@ -36,6 +45,8 @@ class MajikWhistle
 
   // This sends PCM samples to the sound card.
   PcmWriter *pcmWriterPtr;
+
+  std::map <char, struct toneInfo_t> toneTable;
 };
 
 #endif // __MAJIKWHISTLE__
