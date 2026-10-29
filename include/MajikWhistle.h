@@ -13,6 +13,9 @@
 #include <stdint.h>
 #include <map>
 
+#include "Nco.h"
+#include "PcmWriter.h"
+
 struct toneInfo_t
 {
   float frequency1;
@@ -43,7 +46,7 @@ class MajikWhistle
 
   //***************************** attributes **************************
   // The sample rate is needed when performing frequency changes.
-  int sampleRate;
+  uint32_t sampleRate;
 
   // The number of samples for the tone duration.
   uint32_t numberOfSamplesForTone;

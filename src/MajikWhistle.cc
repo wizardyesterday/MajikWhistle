@@ -7,8 +7,6 @@
 #include <unistd.h>
 #include <sys/types.h>
 
-#include "Nco.h"
-#include "PcmWriter.h"
 #include "MajikWhistle.h"
 
 using namespace std;
@@ -32,7 +30,7 @@ struct toneInfoMapping_t
   {'8', {900, 0.35, 1500, 0.35}},
   {'9', {1100, 0.35, 1500, 0.35}},
   {'0', {1300, 0.35, 1500, 0.35}},
-  {'k', {1100, 0.35, 1700, 0.35}},
+  {'s', {1100, 0.35, 1700, 0.35}},
   {'k', {1500, 0.35, 1700, 0.35}},
   {'h', {2600, 0.70, 0, 0}},
 };
@@ -65,8 +63,11 @@ MajikWhistle::MajikWhistle(
   bool success;
   int i;
 
+  // Save for later use.
+  this->sampleRate = sampleRate;
+
   // Default values.
-  toneDurationInMilliseconds = 20;
+  toneDurationInMilliseconds = 250;
   toneSpacingInMilliseconds = 100;
 
   // Compute the number of samples for each tone.
@@ -83,7 +84,7 @@ MajikWhistle::MajikWhistle(
   } // for
 
   // Populate the tone map.
-  for (i = 0; i < sizeof(ncoParameters); i++)
+  for (i = 0; i < 13; i++)
   {
     toneMap[ncoParameters[i].key] = ncoParameters[i].ncoInfo;
   } // for
