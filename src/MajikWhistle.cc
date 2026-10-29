@@ -59,12 +59,11 @@ struct toneInfoMapping_t
 
 *****************************************************************************/
 MajikWhistle::MajikWhistle(
-  int sampleRate,char *configurationFileNamePtr)
+  uint32_t sampleRate,
+  char *configurationFileNamePtr)
 {
   bool success;
   int i;
-  int toneDurationInMilliseconds;
-  int toneSpacingInMilliseconds; 
 
   // Default values.
   toneDurationInMilliseconds = 20;
@@ -142,6 +141,88 @@ MajikWhistle::~MajikWhistle(void)
 
 /*****************************************************************************
 
+  Name: setToneDuration
+
+  Purpose: The purpose of this function is to set the duration of a
+  dial tone in milliseconds.
+  
+  Calling Sequence: setToneDuration(durationInMilliseconds)
+
+  Inputs:
+
+    durationInMilliseconds - The tone duration in milliseconds.
+
+  Outputs:
+
+    None.
+
+*****************************************************************************/
+void MajikWhistle::setToneDuration(uint32_t durationInMilliseconds)
+{
+
+  if (durationInMilliseconds > 1000)
+  {
+    // Limit it.
+    durationInMilliseconds = 1000;
+  } // if
+  else
+  {
+    if (durationInMilliseconds <  20)
+    {
+      // Set it to a sane value.
+      durationInMilliseconds = 20;
+    } // if
+  } // else
+
+  toneDurationInMilliseconds = durationInMilliseconds;
+
+  // Compute the number of samples for each tone.
+  numberOfSamplesForTone = sampleRate * toneDurationInMilliseconds / 1000;
+
+  return;
+
+} // setToneDuration
+
+/*****************************************************************************
+
+  Name: setToneSpacing
+
+  Purpose: The purpose of this function is to set the duration of a
+  dial tone in milliseconds.
+  
+  Calling Sequence: setToneSpacing(spacingInMilliseconds)
+
+  Inputs:
+
+    spacingInMilliseconds - The tone spacing in milliseconds. If the
+    value is zero, all tones will be sent with no spacing between them.
+
+  Outputs:
+
+    None.
+
+*****************************************************************************/
+void MajikWhistle::setToneSpacing(uint32_t spacingInMilliseconds)
+{
+
+  if (spacingInMilliseconds > 1000)
+  {
+    // Limit it.
+    spacingInMilliseconds = 1000;
+  } // if
+
+  toneSpacingInMilliseconds = spacingInMilliseconds;
+
+  // Compute the number of samples for the zero inter-digit sequence.
+  numberOfSamplesForToneSpacing  =
+    sampleRate * toneSpacingInMilliseconds / 1000;
+
+  return;
+
+} // setToneDuration
+
+/*****************************************************************************
+
   Name: dial
 
   Purpose: The purpose of this function is to dial a phone number using
@@ -160,8 +241,8 @@ MajikWhistle::~MajikWhistle(void)
 *****************************************************************************/
 void MajikWhistle::dial(char *phoneNumber)
 {
-  int i;
-  int length;
+  uint32_t i;
+  uint32_t length;
 
   // Do this for efficiency.
   length = strlen(phoneNumber);
@@ -249,8 +330,11 @@ void MajikWhistle::sendDigit(char digit)
     // Send the PCM samples to the sound card. 
     pcmWriterPtr->writePcmSamples(toneBuffer,numberOfSamplesForTone);
 
-    // Send inter-digit silence.
-    pcmWriterPtr->writePcmSamples(zeroBuffer,numberOfSamplesForToneSpacing);
+    // Send inter-digit silence. No spacing between tones is allowed.
+    if (numberOfSamplesForToneSpacing > 0)
+    {
+      pcmWriterPtr->writePcmSamples(zeroBuffer,numberOfSamplesForToneSpacing);
+    } // if
   } // if
 
   return;

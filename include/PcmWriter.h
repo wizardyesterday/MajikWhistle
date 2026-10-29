@@ -20,7 +20,7 @@ class PcmWriter
   PcmWriter(int sampleRate,bool *successPtr);
   ~PcmWriter(void);
 
-  bool writePcmSamples(int16_t *bufferPtr,int numberOfSamples);
+  bool writePcmSamples(int16_t *bufferPtr,uint32_t numberOfSamples);
 
   //***************************** attributes **************************
   private:

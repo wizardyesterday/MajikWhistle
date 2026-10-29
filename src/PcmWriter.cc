@@ -174,7 +174,7 @@ PcmWriter::~PcmWriter(void)
     set to false, indicates failure.
 
 *****************************************************************************/
-bool PcmWriter::writePcmSamples(int16_t *bufferPtr,int numberOfSamples)
+bool PcmWriter::writePcmSamples(int16_t *bufferPtr,uint32_t numberOfSamples)
 {
   int status;
   bool success;

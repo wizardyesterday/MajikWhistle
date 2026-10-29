@@ -27,11 +27,14 @@ class MajikWhistle
 
   public:
 
-  MajikWhistle(int sampleRate, char *configurationFileNamePtr);
+  MajikWhistle(uint32_t sampleRate,char *configurationFileNamePtr);
 
   ~MajikWhistle(void);
 
   void dial(char *phoneNumber);
+
+  void setToneDuration(uint32_t durationInMilliseconds);
+  void setToneSpacing(uint32_t dspacingInMilliseconds);
 
   private:
 
@@ -39,15 +42,20 @@ class MajikWhistle
   void sendDigit(char digit);
 
   //***************************** attributes **************************
-
   // The sample rate is needed when performing frequency changes.
   int sampleRate;
 
-  // Thenumber of samples for the tone duration.
-  int numberOfSamplesForTone;
+  // The number of samples for the tone duration.
+  uint32_t numberOfSamplesForTone;
 
   // The number of samples for inter-digit delay.
-  int numberOfSamplesForToneSpacing;
+  uint32_t numberOfSamplesForToneSpacing;
+
+  // The the tone duration.
+  uint32_t toneDurationInMilliseconds;
+
+  // The inter-digit delay.
+  uint32_t toneSpacingInMilliseconds;
 
   // Storage for tone samples. This gives us 16 seconds.
   int16_t toneBuffer[256000];
