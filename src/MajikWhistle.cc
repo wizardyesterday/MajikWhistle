@@ -44,17 +44,11 @@ struct toneInfoMapping_t
   Purpose: The purpose of this function is to serve as the constructor for
   an instance of a MajikWhstle.
 
-  Calling Sequence: MajikWhstle(sampleRate,toneDurationInMilliseconds,
-                                toneSpacingInMilliseconds,
-                                fileNamePtr)
+  Calling Sequence: MajikWhstle(sampleRate,fileNamePtr)
 
   Inputs:
 
     sampleRate - The sample rate in S/s.
-
-    toneDurationInMilliseconds - The duration of each tone.
-
-    toneSpacingInMilliseconds - The time spacing between each tone.
 
     fileNamePtr - A pointer to a C string array that specifies the
     configuration file name.
@@ -65,37 +59,16 @@ struct toneInfoMapping_t
 
 *****************************************************************************/
 MajikWhistle::MajikWhistle(
-  int sampleRate,
-  int toneDurationInMilliseconds,
-  int toneSpacingInMilliseconds,
-  char *configurationFileNamePtr)
+  int sampleRate,char *configurationFileNamePtr)
 {
   bool success;
   int i;
+  int toneDurationInMilliseconds;
+  int toneSpacingInMilliseconds; 
 
-  if (toneDurationInMilliseconds > 2000)
-  {
-    // Limit it to 2 seconds.
-    toneDurationInMilliseconds = 2000;
-  } // if
-
-  if (toneDurationInMilliseconds < 100)
-  {
-    // Limit it to 100 milliseconds.
-    toneDurationInMilliseconds = 100;
-  } // if
-
-  if (toneSpacingInMilliseconds > 4000)
-  {
-    // Limit it to 4 seconds.
-    toneSpacingInMilliseconds = 4000;
-  } // if
-
-  if (toneSpacingInMilliseconds < 100)
-  {
-    // Limit it to 100 milliseconds;
-    toneSpacingInMilliseconds = 100;
-  } // if
+  // Default values.
+  toneDurationInMilliseconds = 20;
+  toneSpacingInMilliseconds = 100;
 
   // Compute the number of samples for each tone.
   numberOfSamplesForTone = sampleRate * toneDurationInMilliseconds / 1000;

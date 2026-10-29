@@ -27,10 +27,7 @@ class MajikWhistle
 
   public:
 
-  MajikWhistle(int sampleRate,
-               int toneDurationInMilliseconds,
-               int toneSpacingInMilliseconds,
-               char *configurationFileNamePtr);
+  MajikWhistle(int sampleRate, char *configurationFileNamePtr);
 
   ~MajikWhistle(void);
 
