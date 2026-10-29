@@ -193,10 +193,14 @@ void MajikWhistle::dial(char *phoneNumber)
   // Do this for efficiency.
   length = strlen(phoneNumber);
 
-  for (i = 0; i < length; i++)
+  // We don't like zero-length strings.
+  if (length > 0)
   {
-    sendDigit(phoneNumber[i]);
-  } // for
+    for (i = 0; i < length; i++)
+    {
+      sendDigit(phoneNumber[i]);
+    } // for
+  } // if
 
   return;
 
