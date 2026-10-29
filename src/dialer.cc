@@ -178,7 +178,7 @@ int main(int argc,char **argv)
   float frequency2;
   float sampleRate;
   float duration;
-  int numberOfSamples;
+  uint32_t numberOfSamples;
   Nco *myNco1Ptr;
   Nco *myNco2Ptr;
   PcmWriter *myPcmWriterPtr;
