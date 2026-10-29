@@ -194,8 +194,8 @@ void MajikWhistle::dial(char *phoneNumber)
 
   Name: sendDigit
 
-  Purpose: The purpose of this function is to dial a phone number using
-  a touch tone sequence.
+  Purpose: The purpose of this function is to send the appropriate dial
+  done the sound card.
   
   Calling Sequence: sendDigit(digit)
 
@@ -225,6 +225,7 @@ void MajikWhistle::sendDigit(char digit)
   // Retrieve the tone parameters.
   p = toneMap.find(digit);
 
+  // Did we find a match?
   if (p != toneMap.end())
   {
     // Retrieve th NCO parameters.
@@ -258,9 +259,12 @@ void MajikWhistle::sendDigit(char digit)
 
     // Send the PCM samples to the sound card. 
     pcmWriterPtr->writePcmSamples(toneBuffer,numberOfSamplesForTone);
+
+    // Send inter-digit silence.
+    pcmWriterPtr->writePcmSamples(zeroBuffer,numberOfSamplesForToneSpacing);
   } // if
 
   return;
 
-} // dial
+} // sendDigit
 
