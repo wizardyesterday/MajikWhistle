@@ -35,17 +35,28 @@ class MajikWhistle
   ~MajikWhistle(void);
 
   void dial(char *phoneNumber);
-  void hangup(void);
+
+  private:
+
+  //************************ utility functions ***********************
+  void sendDigit(char digit);
 
   //***************************** attributes **************************
-  private:
 
   // The sample rate is needed when performing frequency changes.
   int sampleRate;
 
-  // Th
+  // Thenumber of samples for the tone duration.
   int numberOfSamplesForTone;
+
+  // The number of samples for inter-digit delay.
   int numberOfSamplesForToneSpacing;
+
+  // Storage for tone samples. This gives us 16 seconds.
+  int16_t toneBuffer[256000];
+
+  // Storage for zero-valued samples. This gives us 16 seconds.
+  int16_t zeroBuffer[256000];
 
   // These are the two oscillators whose outputs will be summed.
   Nco *nco1Ptr;

@@ -71,10 +71,32 @@ MajikWhistle::MajikWhistle(
   char *configurationFileNamePtr)
 {
   bool success;
+  int i;
 
-  // Compute th number of samples for each tone.
+  if (toneDurationInMilliseconds > 2000)
+  {
+    // Limit it to 2 seconds.
+    toneDurationInMilliseconds = 2000;
+  } // if
 
-  // Compute the number of samples for the zero interdigit sequence.
+  if (toneSpacingInMilliseconds > 4000)
+  {
+    // Limit it to 4 seconds.
+    toneSpacingInMilliseconds = 4000;
+  } // if
+
+  // Compute the number of samples for each tone.
+  numberOfSamplesForTone = sampleRate * toneDurationInMilliseconds / 1000;
+
+  // Compute the number of samples for the zero inter-digit sequence.
+  numberOfSamplesForToneSpacing  =
+    sampleRate * toneSpacingInMilliseconds / 1000;
+
+  // Fill the digit spacing buffer.
+  for (i = 0; i < numberOfSamplesForToneSpacing; i++)
+  {
+    zeroBuffer[i] = 0;
+  } // for
 
   // Instantiate the NCO's.
   nco1Ptr = new Nco((float)sampleRate,2600);
@@ -147,6 +169,16 @@ MajikWhistle::~MajikWhistle(void)
 *****************************************************************************/
 void MajikWhistle::dial(char *phoneNumber)
 {
+  int i;
+  int length;
+
+  // Do this for efficiency.
+  length = strlen(phoneNumber);
+
+  for (i = 0; i < length; i++)
+  {
+    sendDigit(phoneNumber[i]);
+  } // for
 
   return;
 
@@ -154,25 +186,46 @@ void MajikWhistle::dial(char *phoneNumber)
 
 /*****************************************************************************
 
-  Name: hangup
+  Name: sendDigit
 
-  Purpose: The purpose of this function is to dial send a hangup tone.
+  Purpose: The purpose of this function is to dial a phone number using
+  a touch tone sequence.
   
-  Calling Sequence: dial(void)
+  Calling Sequence: sendDigit(digit)
 
   Inputs:
 
-    None.
+    digit - A character that represents a digit.
 
   Outputs:
 
-    Nonw.
+    None.
 
 *****************************************************************************/
-void MajikWhistle::hangup(void)
+void MajikWhistle::sendDigit(char digit)
 {
+  int i;
+  float frequency1;
+  float frequency2;
+  float amplitude1;
+  float amplitude2;
+  int16_t cosine1Value;
+  int16_t cosine2Value;
+  int16_t cosineValue;
+  float iValue;
+  float qValue;
+
+  // Retrieve the tone parameters.
+
+  for (i = 0; i < numberOfSamplesForTone; i++)
+  {
+   // Do the majik. 
+  } // for
+
+  // Send the PCM samples to the sound card. 
+  pcmWriterPtr->writePcmSamples(toneBuffer,numberOfSamplesForTone);
 
   return;
 
-} // hangup
+} // dial
 
