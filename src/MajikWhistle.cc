@@ -220,16 +220,45 @@ void MajikWhistle::sendDigit(char digit)
   int16_t cosineValue;
   float iValue;
   float qValue;
+  std::map <char, toneInfo_t>::iterator p;
 
   // Retrieve the tone parameters.
+  p = toneMap.find(digit);
 
-  for (i = 0; i < numberOfSamplesForTone; i++)
+  if (p != toneMap.end())
   {
-   // Do the majik. 
-  } // for
+    // Retrieve th NCO parameters.
+    frequency1 = p->second.frequency1;
+    amplitude1 = p->second.amplitude1;
+    frequency2 = p->second.frequency2;
+    amplitude2 = p->second.amplitude2;
 
-  // Send the PCM samples to the sound card. 
-  pcmWriterPtr->writePcmSamples(toneBuffer,numberOfSamplesForTone);
+    for (i = 0; i < numberOfSamplesForTone; i++)
+    {
+     // Set the NCO's to the appropriate frequencies.
+     nco1Ptr->setFrequency(frequency1);
+     nco2Ptr->setFrequency(frequency2);
+
+      // Get the next sample pair.
+      nco1Ptr->runFast(&iValue,&qValue);
+
+      // Convert to integer and scale.
+      cosine1Value = (int16_t)(iValue * amplitude1 * 32767);
+
+      // Get the next sample pair.
+      nco2Ptr->runFast(&iValue,&qValue);
+
+      // Convert to integer and scale.
+      cosine2Value = (int16_t)(iValue * amplitude2 * 32767);
+
+      // Sum and store.
+      toneBuffer[i] = cosine1Value + cosine2Value;
+
+    } // for
+
+    // Send the PCM samples to the sound card. 
+    pcmWriterPtr->writePcmSamples(toneBuffer,numberOfSamplesForTone);
+  } // if
 
   return;
 
