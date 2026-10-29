@@ -65,7 +65,7 @@ class MajikWhistle
   // This sends PCM samples to the sound card.
   PcmWriter *pcmWriterPtr;
 
-  std::map <char, struct toneInfo_t> toneTable;
+  std::map <char, toneInfo_t> toneMap;
 };
 
 #endif // __MAJIKWHISTLE__

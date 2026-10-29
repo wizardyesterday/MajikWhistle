@@ -20,7 +20,7 @@ struct toneInfoMapping_t
   toneInfo_t ncoInfo;
 };
 
-  toneInfoMapping_t a[] =
+  toneInfoMapping_t ncoParameters[] =
 {
   {'1', {700, 0.35, 900, 0.35}},
   {'2', {700, 0.35, 1100, 0.35}},
@@ -96,6 +96,12 @@ MajikWhistle::MajikWhistle(
   for (i = 0; i < numberOfSamplesForToneSpacing; i++)
   {
     zeroBuffer[i] = 0;
+  } // for
+
+  // Populate the tone map.
+  for (i = 0; i < sizeof(ncoParameters); i++)
+  {
+    toneMap[ncoParameters[i].key] = ncoParameters[i].ncoInfo;
   } // for
 
   // Instantiate the NCO's.
