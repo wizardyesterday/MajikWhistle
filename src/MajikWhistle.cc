@@ -79,10 +79,22 @@ MajikWhistle::MajikWhistle(
     toneDurationInMilliseconds = 2000;
   } // if
 
+  if (toneDurationInMilliseconds < 100)
+  {
+    // Limit it to 100 milliseconds.
+    toneDurationInMilliseconds = 100;
+  } // if
+
   if (toneSpacingInMilliseconds > 4000)
   {
     // Limit it to 4 seconds.
     toneSpacingInMilliseconds = 4000;
+  } // if
+
+  if (toneSpacingInMilliseconds < 100)
+  {
+    // Limit it to 100 milliseconds;
+    toneSpacingInMilliseconds = 100;
   } // if
 
   // Compute the number of samples for each tone.
