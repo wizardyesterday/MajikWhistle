@@ -43,6 +43,7 @@ class MajikWhistle
 
   //************************ utility functions ***********************
   void sendDigit(char digit);
+  void sendSilence(void);
 
   //***************************** attributes **************************
   // The sample rate is needed when performing frequency changes.
@@ -60,11 +61,12 @@ class MajikWhistle
   // The inter-digit delay.
   uint32_t toneSpacingInMilliseconds;
 
-  // Storage for tone samples. This gives us 16 seconds.
+  // Storage for tone samples and zero samples.
   int16_t toneBuffer[256000];
 
+  uint32_t toneBufferIndex;
+
   // Storage for zero-valued samples. This gives us 16 seconds.
-  int16_t zeroBuffer[256000];
 
   // These are the two oscillators whose outputs will be summed.
   Nco *nco1Ptr;

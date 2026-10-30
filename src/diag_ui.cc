@@ -399,7 +399,7 @@ static void cmdSetToneDuration(char *bufferPtr)
   // Set the demodulator mode.
   diagUi_whistlePtr->setToneDuration(duration);
 
-  nprintf(stderr,"Tone duration set to %u.\n",duration);
+  nprintf(stderr,"Tone duration set to %u milliseconds.\n",duration);
 
   return;
 
@@ -466,6 +466,16 @@ static void cmdSetToneSpacing(char *bufferPtr)
 *****************************************************************************/
 static void cmdDialCall(char *bufferPtr)
 {
+  int i;
+  int length;
+
+  length = strlen(bufferPtr);
+
+  while (bufferPtr[i] == ' ')
+  {
+    // Advanxe past leading spaces.
+    bufferPtr++;
+  } // for
 
   // Send the number to dial.
   diagUi_whistlePtr->dial(bufferPtr);

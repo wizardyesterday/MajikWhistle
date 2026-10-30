@@ -70,18 +70,15 @@ MajikWhistle::MajikWhistle(
   toneDurationInMilliseconds = 250;
   toneSpacingInMilliseconds = 100;
 
+  // Reference beginning of tone buffer.
+  toneBufferIndex = 0;
+
   // Compute the number of samples for each tone.
   numberOfSamplesForTone = sampleRate * toneDurationInMilliseconds / 1000;
 
   // Compute the number of samples for the zero inter-digit sequence.
   numberOfSamplesForToneSpacing  =
     sampleRate * toneSpacingInMilliseconds / 1000;
-
-  // Fill the digit spacing buffer.
-  for (i = 0; i < numberOfSamplesForToneSpacing; i++)
-  {
-    zeroBuffer[i] = 0;
-  } // for
 
   // Populate the tone map.
   for (i = 0; i < 13; i++)
@@ -245,6 +242,9 @@ void MajikWhistle::dial(char *phoneNumber)
   uint32_t i;
   uint32_t length;
 
+  // Reference the beginning of the tone buffer.
+  toneBufferIndex = 0;
+
   // Do this for efficiency.
   length = strlen(phoneNumber);
 
@@ -254,8 +254,14 @@ void MajikWhistle::dial(char *phoneNumber)
     for (i = 0; i < length; i++)
     {
       sendDigit(phoneNumber[i]);
+
+      // Send silent period.
+      sendSilence();
     } // for
   } // if
+
+  // Send the PCM samples to the sound card. 
+  pcmWriterPtr->writePcmSamples(toneBuffer,toneBufferIndex);
 
   return;
 
@@ -324,21 +330,51 @@ void MajikWhistle::sendDigit(char digit)
       cosine2Value = (int16_t)(iValue * amplitude2 * 32767);
 
       // Sum and store.
-      toneBuffer[i] = cosine1Value + cosine2Value;
+      toneBuffer[toneBufferIndex] = cosine1Value + cosine2Value;
 
+      // Reference the next position in the tone buffer.
+      toneBufferIndex++;
     } // for
-
-    // Send the PCM samples to the sound card. 
-    pcmWriterPtr->writePcmSamples(toneBuffer,numberOfSamplesForTone);
-
-    // Send inter-digit silence. No spacing between tones is allowed.
-    if (numberOfSamplesForToneSpacing > 0)
-    {
-      pcmWriterPtr->writePcmSamples(zeroBuffer,numberOfSamplesForToneSpacing);
-    } // if
   } // if
 
   return;
 
 } // sendDigit
+
+
+/*****************************************************************************
+
+  Name: sendSilence
+
+  Purpose: The purpose of this function is to send zero-valued samples to
+  the sound card.
+  
+  Calling Sequence: sendSilence()
+
+  Inputs:
+
+    None.
+
+  Outputs:
+
+    None.
+
+*****************************************************************************/
+void MajikWhistle::sendSilence(void)
+{
+  int i;
+
+  for (i = 0; i < numberOfSamplesForToneSpacing; i++)
+  {
+    // Store zero-valued samples.
+    toneBuffer[toneBufferIndex] = 0;
+
+    // Reference the next position in the tone buffer.
+    toneBufferIndex++;
+  } // for
+
+  return;
+
+} // sendSilence
+
 
