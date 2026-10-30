@@ -9,6 +9,8 @@
 
 #include "MajikWhistle.h"
 
+#define MAXIMUM_NUMBER_OF_DIALED_DIGITS (20)
+
 using namespace std;
 
 
@@ -248,9 +250,15 @@ void MajikWhistle::dial(char *phoneNumber)
   // Do this for efficiency.
   length = strlen(phoneNumber);
 
-  // We don't like zero-length strings.
+  if (length > MAXIMUM_NUMBER_OF_DIALED_DIGITS)
+  {
+    // Limit it.
+    length = MAXIMUM_NUMBER_OF_DIALED_DIGITS;
+  } // if
+
   if (length > 0)
   {
+    // We have a valid length.
     for (i = 0; i < length; i++)
     {
       sendDigit(phoneNumber[i]);

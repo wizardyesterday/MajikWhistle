@@ -62,7 +62,7 @@ class MajikWhistle
   uint32_t toneSpacingInMilliseconds;
 
   // Storage for tone samples and zero samples.
-  int16_t toneBuffer[256000];
+  int16_t toneBuffer[1024000];
 
   uint32_t toneBufferIndex;
 
