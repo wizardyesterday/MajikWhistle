@@ -9,10 +9,7 @@
 
 #include "MajikWhistle.h"
 
-#define MAXIMUM_NUMBER_OF_DIALED_DIGITS (20)
-
 using namespace std;
-
 
 struct toneInfoMapping_t
 {
@@ -64,6 +61,7 @@ MajikWhistle::MajikWhistle(
 {
   bool success;
   int i;
+  int length;
 
   // Save for later use.
   this->sampleRate = sampleRate;
@@ -82,8 +80,11 @@ MajikWhistle::MajikWhistle(
   numberOfSamplesForToneSpacing  =
     sampleRate * toneSpacingInMilliseconds / 1000;
 
+  // Compute upper loop limit.
+  length = sizeof(ncoParameters) / sizeof(toneInfoMapping_t);
+
   // Populate the tone map.
-  for (i = 0; i < 13; i++)
+  for (i = 0; i < length; i++)
   {
     toneMap[ncoParameters[i].key] = ncoParameters[i].ncoInfo;
   } // for
@@ -250,10 +251,10 @@ void MajikWhistle::dial(char *phoneNumber)
   // Do this for efficiency.
   length = strlen(phoneNumber);
 
-  if (length > MAXIMUM_NUMBER_OF_DIALED_DIGITS)
+  if (length > MAXIMUM_PHONE_NUMBER_SIZE)
   {
     // Limit it.
-    length = MAXIMUM_NUMBER_OF_DIALED_DIGITS;
+    length = MAXIMUM_PHONE_NUMBER_SIZE;
   } // if
 
   if (length > 0)

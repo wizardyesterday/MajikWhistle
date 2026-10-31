@@ -16,6 +16,13 @@
 #include "Nco.h"
 #include "PcmWriter.h"
 
+#define SAMPLE_RATE (8000)
+#define TONE_TIME (1)
+#define SILENT_TIME (1)
+#define SINGLE_ENTRY_SIZE ((TONE_TIME + SILENT_TIME) * SAMPLE_RATE)
+#define MAXIMUM_PHONE_NUMBER_SIZE (20)
+#define TONE_BUFFER_SIZE (SINGLE_ENTRY_SIZE * MAXIMUM_PHONE_NUMBER_SIZE)
+
 struct toneInfo_t
 {
   float frequency1;
@@ -63,11 +70,9 @@ class MajikWhistle
   uint32_t toneSpacingInMilliseconds;
 
   // Storage for tone samples and zero samples.
-  int16_t toneBuffer[1024000];
+  int16_t toneBuffer[TONE_BUFFER_SIZE];
 
   uint32_t toneBufferIndex;
-
-  // Storage for zero-valued samples. This gives us 16 seconds.
 
   // These are the two oscillators whose outputs will be summed.
   Nco *nco1Ptr;
