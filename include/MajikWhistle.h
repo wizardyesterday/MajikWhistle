@@ -38,6 +38,7 @@ class MajikWhistle
 
   void setToneDuration(uint32_t durationInMilliseconds);
   void setToneSpacing(uint32_t dspacingInMilliseconds);
+  void displayInternalInformation(char **displayBufferPtrPtr);
 
   private:
 

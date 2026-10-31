@@ -385,4 +385,72 @@ void MajikWhistle::sendSilence(void)
 
 } // sendSilence
 
+/**************************************************************************
+  
+  Name: agc_displayInternalInformation 
+
+  Purpose: The purpose of this function is to display information in the
+  AGC.  rather than actually display this information, the formatted
+  indormation is printed to a string so that the client software can
+  display the information is it sees fit.  This way, the AGC focuses on
+  perofming its main function rather than printing information.  in
+  general, this information provides a glass box view of the AGC that is
+  useful for system level debugging.
+  
+  Calling Sequence: agc_displayInternalInformation(&displayBuffwe)
+
+  Inputs:
+
+    displayBuffer - A pointer to a pointer to a display buffer provided
+    by the caller.
+
+  Outputs:
+  Outputs:
+
+    None.
+
+**************************************************************************/
+void MajikWhistle::displayInternalInformation(char **displayBufferPtrPtr)
+{
+  char *p;;
+  int n;
+
+  // Reference caller's display buffer.
+  p = *displayBufferPtrPtr;
+
+  n = sprintf(p,"\n--------------------------------------------\n");
+  p += n;
+
+  n = sprintf(p,"Majik Whistler Internal Information\n");
+  p += n;
+
+  n = sprintf(p,"--------------------------------------------\n");
+  p += n;
+
+  n = sprintf(p,"Sample Rate                : %u S/s\n",
+          sampleRate);
+  p += n;
+
+  n = sprintf(p,"Tone Duration              : %u ms\n",
+          toneDurationInMilliseconds);
+  p += n;
+
+  n = sprintf(p,"Tone Spacing               : %u ms\n",
+          toneSpacingInMilliseconds);
+  p += n;
+
+  n = sprintf(p,"Samples Per Tone           : %u samples\n",
+          numberOfSamplesForTone);
+  p += n;
+
+  n = sprintf(p,"Samples Per Tone Spacing   : %u samples\n",
+          numberOfSamplesForToneSpacing);
+  p += n;
+
+  // Terminate string.
+  *p = 0;
+
+  return;
+
+} // displayInternalInformation
 

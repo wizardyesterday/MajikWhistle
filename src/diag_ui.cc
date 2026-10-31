@@ -59,9 +59,6 @@ static bool consoleConnected;
 static int connectFileDescriptor;
 static int diagUiNetworkPort;
 
-// Default to normal dongle.
-static bool v4BlogRadio = false;
-
 /**************************************************************************/
 /* function prototypes                                                    */
 /**************************************************************************/
@@ -81,6 +78,7 @@ static void cmdDialCall(char *bufferPtr);
 static void cmdSendHangup(char *bufferPtr);
 static void cmdExitSystem(char *bufferPtr);
 static void cmdHelp(void);
+static void cmdDisplayInformation(char *bufferPtr);
 
 /* network functions */
 static void startCliServer(void *arg);
@@ -106,6 +104,7 @@ static const commandEntry commandTable[] =
   {"set","tonespacing",cmdSetToneSpacing},     // set tonespacing tonespacing
   {"dial","call",cmdDialCall},                 // dial call number
   {"send","hangup",cmdSendHangup},             // send hangup
+  {"display","information",cmdDisplayInformation}, // display information
   {"exit","system",cmdExitSystem},             // exit system
   {"\0","\0",0}                                // last entry in command table
 };
@@ -518,7 +517,44 @@ static void cmdSendHangup(char *bufferPtr)
 
   return;
 
-} // cmdDialCall
+} // cmdSendHangup
+
+/*****************************************************************************
+
+  Name: cmdSendHangup
+
+  Purpose: The purpose of this function is to send dial tones to make a call.
+
+  The syntax for the corresponding command is the following:
+
+    "send hangup"
+
+  Calling Sequence: cmdSendHangup(bufferPtr)
+
+  Inputs:
+
+    bufferPtr - A pointer to the command parameters.
+
+  Outputs:
+
+    None.
+
+*****************************************************************************/
+static void cmdDisplayInformation(char *bufferPtr)
+{
+  char displayBuffer[128000];
+  char *displayBufferPtr;
+
+  displayBufferPtr = displayBuffer;
+
+  // Send the hangup.
+  diagUi_whistlePtr->displayInternalInformation(&displayBufferPtr);
+
+  nprintf(stderr,"%s",displayBuffer);
+
+  return;
+
+} // cmdDisplayIndormation
 
 /*****************************************************************************
 
@@ -580,6 +616,7 @@ static void cmdHelp(void)
   nprintf(stderr,"set tonespacing <spacing (milliseconds)>\n");
   nprintf(stderr,"dial call <<k>number<s>>\n");
   nprintf(stderr,"send hangup\n");
+  nprintf(stderr,"display information\n");
   nprintf(stderr,"exit system\n");
   nprintf(stderr,"help\n");
   nprintf(stderr,"Type <^B><enter> key sequence to repeat last command\n");
