@@ -388,17 +388,17 @@ void MajikWhistle::sendSilence(void)
 
 /**************************************************************************
   
-  Name: agc_displayInternalInformation 
+  Name: displayInternalInformation 
 
   Purpose: The purpose of this function is to display information in the
-  AGC.  rather than actually display this information, the formatted
-  indormation is printed to a string so that the client software can
-  display the information is it sees fit.  This way, the AGC focuses on
-  perofming its main function rather than printing information.  in
-  general, this information provides a glass box view of the AGC that is
-  useful for system level debugging.
+  majik whistler. rRther than actually display this information, the
+  formatted indormation is printed to a string so that the client software
+ ` can display the information is it sees fit.  This way, the majik
+  whistler focuses on perfofming its main function rather than printing
+  information.  in general, this information provides a glass box view of
+  the majik whistler that is useful for system level debugging.
   
-  Calling Sequence: agc_displayInternalInformation(&displayBuffwe)
+  Calling Sequence: displayInternalInformation(&displayBuffwe)
 
   Inputs:
 

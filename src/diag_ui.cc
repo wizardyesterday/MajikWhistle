@@ -76,9 +76,9 @@ static void cmdSetToneDuration(char *bufferPtr);
 static void cmdSetToneSpacing(char *bufferPtr);
 static void cmdDialCall(char *bufferPtr);
 static void cmdSendHangup(char *bufferPtr);
+static void cmdGetInfo(char *bufferPtr);
 static void cmdExitSystem(char *bufferPtr);
 static void cmdHelp(void);
-static void cmdDisplayInformation(char *bufferPtr);
 
 /* network functions */
 static void startCliServer(void *arg);
@@ -104,7 +104,7 @@ static const commandEntry commandTable[] =
   {"set","tonespacing",cmdSetToneSpacing},     // set tonespacing tonespacing
   {"dial","call",cmdDialCall},                 // dial call number
   {"send","hangup",cmdSendHangup},             // send hangup
-  {"display","information",cmdDisplayInformation}, // display information
+  {"get","info",cmdGetInfo},                    // get info
   {"exit","system",cmdExitSystem},             // exit system
   {"\0","\0",0}                                // last entry in command table
 };
@@ -521,15 +521,16 @@ static void cmdSendHangup(char *bufferPtr)
 
 /*****************************************************************************
 
-  Name: cmdSendHangup
+  Name: cmdGetInfo
 
-  Purpose: The purpose of this function is to send dial tones to make a call.
+  Purpose: The purpose of this function is to display majik whistler
+  internal information.
 
   The syntax for the corresponding command is the following:
 
-    "send hangup"
+    "get info"
 
-  Calling Sequence: cmdSendHangup(bufferPtr)
+  Calling Sequence: cmdGetInfo(bufferPtr)
 
   Inputs:
 
@@ -540,7 +541,7 @@ static void cmdSendHangup(char *bufferPtr)
     None.
 
 *****************************************************************************/
-static void cmdDisplayInformation(char *bufferPtr)
+static void cmdGetInfo(char *bufferPtr)
 {
   char displayBuffer[128000];
   char *displayBufferPtr;
@@ -554,7 +555,7 @@ static void cmdDisplayInformation(char *bufferPtr)
 
   return;
 
-} // cmdDisplayIndormation
+} // cmdGetInfo
 
 /*****************************************************************************
 
@@ -616,7 +617,7 @@ static void cmdHelp(void)
   nprintf(stderr,"set tonespacing <spacing (milliseconds)>\n");
   nprintf(stderr,"dial call <<k>number<s>>\n");
   nprintf(stderr,"send hangup\n");
-  nprintf(stderr,"display information\n");
+  nprintf(stderr,"get info\n");
   nprintf(stderr,"exit system\n");
   nprintf(stderr,"help\n");
   nprintf(stderr,"Type <^B><enter> key sequence to repeat last command\n");
