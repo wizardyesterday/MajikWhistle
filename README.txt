@@ -111,10 +111,10 @@ argument of -h.
 /_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
 5.0 Summary
 /_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
-This document has provided a quick overview of the majikDemo program and its
-test programs in the rapidPrototyp directory.
-Fel free to leave me any comments, suggestions, both, constructive and
-nonconstructive.
+This document has provided a quick overview of the majikWhistle demo
+program and its test programs in the rapidPrototype directory.
+Feel free to leave me any comments, suggestions, both, constructive and
+destructive.
 
 I hang out on irc.libera.chat, and my nick is wizardyesterday, should
 anyone want to get a hold of me.
