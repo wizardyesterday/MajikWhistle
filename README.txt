@@ -84,6 +84,29 @@ programs will be created in the rapidPrototype/ firectory:
 dialer, dtmf, testMajik
 
 4.0 Usage
+To execute the majikWhistle program, type './majikWhistle'. Open up a
+separate terminal and type 'netcat localhost 20330'. A welcome message will
+be displayed, ans you can type help to view the list of commands.  For
+example, to dial a number, type 'dial call k 1 (20)555-1212 s'. The
+appropriate dial tones will be output by the sound card.
+
+To execute the programs in the rapidPrototype directory, you can type:
+./dtmf
+or
+./dialer
+or
+./testMajik
+
+Each of these programs display usage information if you provide an
+argument og -h.
 
 5.0 Summary
+This document has provided a quick overview of the majikDemo program and its
+test programs in the rapidPrototyp directory.
+Fel free to leave me any comments, suggestions, both, constructive and
+nonconstructive.
 
+I hang out on irc.libera.chat, and my nick is wizardyesterday, should
+anyone want to get a hold of me.
+
+Enjoy!
