@@ -20,7 +20,7 @@ Keyboard Character |  Frequency 1 | Frequency 2 |  Amplitude 1 | Amplitude 2
      0             |   1300Hz     |  1500Hz     |     0.35   |     0.35 
      s (STart)     |   1100Hz     |  1700Hz     |     0.35   |     0.35 
      k (Key Pulse) |   1500Hz     |  1700Hz     |     0.35   |     0.35 
-     h (Hangup)    |   2600Hz     |  2600Hz     |     0.70   |     0
+     h (Hangup)    |   2600Hz     |     0Hz     |     0.70   |     0
      
  It should be mentioned that this software was written in order to implement
 a software version of the infamous bluebox, and it has been created for
