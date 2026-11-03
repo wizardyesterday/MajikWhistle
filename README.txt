@@ -20,9 +20,35 @@ Keyboard Character |  Frequency 1 | Frequency 2 |  Amplitude 1 | Amplitude 2
      k (Key Pulse) |   1500Hz     |  1700Hz     |     0.35   |     0.35 
      h (Hangup)    |   2600Hz     |  2600Hz     |     0.70   |     0
      
-  
+ It shold be mentioned that this software was written in order to impliment
+a software version of the infamous bluebox, and it has been created for
+educational purposes. 
 
 2.0 File list
+
+include/MajikWhistle.h
+include/Nco.h
+include/PcmWriter.h
+include/PhaseAccumulator.h
+include/console.h
+include/diagUi.h
+
+
+src/MajikWhistle.cc
+src/Nco.cc
+src/PcmWriter.cc
+src/PhaseAccumulator.cc
+src/console.cc
+src/cosine.cc
+src/diag_ui.cc
+src/majikWhistle.cc
+src/nco.cc
+
+
+rapidPrototype/buildDtmf.sh
+rapidPrototype/dialer.cc
+rapidPrototype/dtmf.cc
+rapidPrototype/testMajik.cc
 
 3.0 Building
 
