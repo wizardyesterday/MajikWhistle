@@ -26,6 +26,20 @@ educational purposes.
 
 2.0 File list
 
+--------------------------------------
+2.2 MajikWhistle/ Directory
+--------------------------------------
+LICENSE
+README.txt
+buildMajikWhistle.sh
+clean.sh
+include/
+src/
+rapidPrototype/
+
+--------------------------------------
+2.2 include/ directory
+--------------------------------------
 include/MajikWhistle.h
 include/Nco.h
 include/PcmWriter.h
@@ -33,7 +47,9 @@ include/PhaseAccumulator.h
 include/console.h
 include/diagUi.h
 
-
+--------------------------------------
+2.3  src/ Directory
+--------------------------------------
 src/MajikWhistle.cc
 src/Nco.cc
 src/PcmWriter.cc
@@ -44,7 +60,9 @@ src/diag_ui.cc
 src/majikWhistle.cc
 src/nco.cc
 
-
+--------------------------------------
+2.4 rapidPrototype/ Directory
+--------------------------------------
 rapidPrototype/buildDtmf.sh
 rapidPrototype/dialer.cc
 rapidPrototype/dtmf.cc
