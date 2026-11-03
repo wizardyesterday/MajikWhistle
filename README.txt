@@ -70,6 +70,19 @@ rapidPrototype/testMajik.cc
 
 3.0 Building
 
+--------------------------------------
+3.1 majikhistle Application
+--------------------------------------
+From the MajikWhistle directory type 'sh buildMajikWhistle.sh.
+The program, called majikWhistle will be created.
+
+--------------------------------------
+3.2 Rapid Prototype Applications
+--------------------------------------
+Change directory to rapidPrototype.  Type 'builDDtmf.sh'. The following
+programs will be created in the rapidPrototype/ firectory:
+dialer, dtmf, testMajik
+
 4.0 Usage
 
 5.0 Summary
