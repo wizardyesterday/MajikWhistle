@@ -85,7 +85,7 @@ The program, called majikWhistle will be created.
 --------------------------------------
 3.2 Rapid Prototype Applications
 --------------------------------------
-Change directory to rapidPrototype.  Type 'builDDtmf.sh'. The following
+Change directory to rapidPrototype.  Type 'buildDtmf.sh'. The following
 programs will be created in the rapidPrototype/ firectory:
 dialer, dtmf, testMajik
 
