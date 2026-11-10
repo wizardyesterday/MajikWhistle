@@ -39,7 +39,6 @@ buildMajikWhistle.sh
 clean.sh
 include/
 src/
-rapidPrototype/
 
 --------------------------------------
 2.2 include/ directory
