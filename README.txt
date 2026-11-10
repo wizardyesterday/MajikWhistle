@@ -118,4 +118,13 @@ destructive.
 I hang out on irc.libera.chat, and my nick is wizardyesterday, should
 anyone want to get a hold of me.
 
-Enjoy!
+Facebook:
+  Name: Chris Gianakopoulos
+
+IRC:
+  Server: irc.libera.chat
+  Nick: wizareyesterday
+  Channels: ##trustnoone, ##rtlsdr
+
+Feel free to contact me anytime!
+
